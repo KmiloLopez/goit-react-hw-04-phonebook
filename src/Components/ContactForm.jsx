@@ -1,27 +1,69 @@
 import React, { Fragment } from 'react';
+import {  useState } from "react";
 import { nanoid } from 'nanoid';
 
-const ContactForm = ({
-  Name,
-  Number,
-  setName,
-  setNumber,
-  setContacts,
-  Contacts,
-}) => {
-  const addUser = () => {
-    const nuevoContacto = {
-      nombre: Name,
-      id: nanoid(),
-      numero: Number,
-    };
+export default function ContactForm ({submitForm}){
+  const [name,setName]=useState("");
+  const [number,setNumber]=useState("")
 
-    setContacts([...Contacts, nuevoContacto]);
-    setName('');
-    setNumber('');
-    console.log('nombre', nuevoContacto.nombre);
-    console.log('Name', Name);
+ const nameInputId = nanoid();
+  const  numberInputId = nanoid();
+
+ const handleChange = event => {
+  const { name, value } = event.target;
+
+  switch (name) {
+    case 'name':
+      setName(value);
+      break;
+
+    case 'number':
+      setNumber(value);
+      break;
+
+    default:
+     return;
   };
+}
+
+
+
+const handleSubmit = event => {
+  event.preventDefault();
+  submitForm({name,number});
+  reset();
+  console.log(name, number);
+
+};
+
+
+const reset=()=> {
+  setName('');
+setNumber('');
+};
+
+
+// const ContactForm = ({
+//   Name,
+//   Number,
+//   setName,
+//   setNumber,
+//   setContacts,
+//   Contacts,
+// }) => {
+//   const addUser = () => {
+//     const nuevoContacto = {
+//       nombre: Name,
+//       id: nanoid(),
+//       numero: Number,
+//     };
+
+//     setContacts([...Contacts, nuevoContacto]);
+//     setName('');
+//     setNumber('');
+//     console.log('nombre', nuevoContacto.nombre);
+//     console.log('Name', Name);
+//   };
   /*  const AddIT=()=> {
         
         let nuevoContacto = {
@@ -37,21 +79,7 @@ const ContactForm = ({
   /* const { handleInput, name, number, addUser } = this.props; */
   return (
     <Fragment>
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          console.log('se envio el form');
-          addUser({Name, Number});
-
-          let contactsFromLocal = localStorage.getItem('myContacts');
-          if (JSON.parse(contactsFromLocal) !== Contacts) {
-            localStorage.setItem('myContacts', JSON.stringify(Contacts));
-          }
-          console.log('contactsFromLocal', contactsFromLocal);
-          console.log('contacts', Contacts);
-
-         
-        }}
+      <form onSubmit={handleSubmit}
       >
         <p>Name</p>
         <input
@@ -60,8 +88,9 @@ const ContactForm = ({
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
-          value={Name}
-          onChange={e => setName(e.target.value)}
+          value={name}
+          onChange={handleChange}
+          id ={nameInputId}
         />
         <p>Number</p>
         <input
@@ -70,8 +99,9 @@ const ContactForm = ({
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
-          value={Number}
-          onChange={e => setNumber(e.target.value)}
+          value={number}
+          onChange={handleChange}
+          id={numberInputId}
         />
         <button type="submit">Add contact</button>
       </form>
@@ -79,4 +109,4 @@ const ContactForm = ({
   );
 };
 
-export default ContactForm;
+//export default ContactForm;

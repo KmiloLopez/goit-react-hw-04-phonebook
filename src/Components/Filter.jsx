@@ -10,7 +10,7 @@ const Filter =({setFiltering, Filtering})=> {
         title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
         required
         value={Filtering}
-        onChange={(e)=>setFiltering(e.target.value)}
+        onChange={setFiltering}
     />
     )
   
